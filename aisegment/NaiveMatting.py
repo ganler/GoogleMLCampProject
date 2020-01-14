@@ -12,7 +12,7 @@ IMG_HEIGHT = 128
 IMG_WIDTH = 128
 IMG_CHANNELS = 3
 
-BATCH_SIZE = 100
+BATCH_SIZE = 500
 
 root_path = '../../ml-camp/MattingHuman/aisegmentcom-matting-human-datasets'
 clip_root_path = os.path.join(root_path, 'clip_img')
@@ -57,9 +57,10 @@ df_mask['merge_id'] = df_mask['mask_id'].apply(get_name)
 
 df_data = pd.merge(df_clip, df_mask, on = 'merge_id')[['clip_id', 'clip_path', 'mask_id', 'mask_path']].reset_index(drop=True)
 
-SAMPLE_SIZE = 1000
+
 # For Test Use
-df_data = df_data.sample(SAMPLE_SIZE, random_state=0).reset_index(drop=True)
+# SAMPLE_SIZE = 1000
+# df_data = df_data.sample(SAMPLE_SIZE, random_state=0).reset_index(drop=True)
 # For Debug Use
 print(df_data.head())
 print(df_data.tail())
