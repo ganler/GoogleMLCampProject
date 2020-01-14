@@ -99,7 +99,7 @@ for i, test_id in enumerate(test_id_list):
     image = resize(image, (800, 600))
     image = image.reshape((1, 800, 600, 1))
 
-    if i == 0::
+    if i == 0:
         preds = image
     else:
         preds = np.vstack((preds, image))
