@@ -11,6 +11,8 @@ import os
 from sklearn.model_selection import train_test_split
 from skimage.transform import resize
 
+import matplotlib.pyplot as plt
+
 # Constant Parameters
 IMG_HEIGHT = 128
 IMG_WIDTH = 128
@@ -122,5 +124,6 @@ print(alpha_preds.shape)
 
 predicted_masks = np.concatenate((X_test, alpha_preds), axis=-1)
 
-plt.imshow(predicted_masks)
+for image in predicted_masks:
+    plt.imshow(image)
 plt.show()
