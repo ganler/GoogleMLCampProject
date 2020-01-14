@@ -57,5 +57,75 @@ df_mask['merge_id'] = df_mask['mask_id'].apply(get_name)
 
 df_data = pd.merge(df_clip, df_mask, on = 'merge_id')[['clip_id', 'clip_path', 'mask_id', 'mask_path']].reset_index(drop=True)
 # For Debug Use
-print(df_data.head())
-print(df_data.tail())
+# print(df_data.head())
+# print(df_data.tail())
+
+df_train, df_val = train_test_split(df_data, test_size=0.2, random_state=0)
+
+df_train = df_train.reset_index(drop=True)
+df_val = df_val.reset_index(drop=True)
+
+# For Debug Use
+# print(df_train)
+# print(df_val)
+
+df_train.to_csv('df_train.csv.gz', compression='gzip', index=False)
+df_val.to_csv('df_val.csv.gz', compression='gzip', index=False)
+
+def train_generator(batch_size=100):
+  while True:
+    for df in pd.read_csv('df_train.csv.gz', chunksize=batch_size):  
+      clip_id_list = list(df['clip_id'])
+      clip_path_list = list(df['clip_path'])
+      mask_id_list = list(df['mask_id'])
+      mask_path_list = list(df['mask_path'])
+
+      X_train = np.zeros((len(df), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS), dtype=np.uint8)
+      Y_train = np.zeros((len(df), IMG_HEIGHT, IMG_WIDTH, 1), dtype=np.bool)
+        
+      for i, clip_id in enumerate(clip_id_list):
+          path = os.path.join(clip_path_list[i], clip_id)
+          image = cv2.imread(path)
+          image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
+          X_train[i] = image
+
+      for j, mask_id in enumerate(mask_path_list):
+          path = os.path.join(mask_path_list[i], mask_id)
+          image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+          image = image[:, :, 3]
+          image = np.expand_dims(image, axis=-1)
+          image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
+          Y_train[j] = image
+            
+      yield X_train, Y_train
+
+def val_generator(batch_size=100):
+  while True:
+    for df in pd.read_csv('df_train.csv.gz', chunksize=batch_size):  
+      clip_id_list = list(df['clip_id'])
+      clip_path_list = list(df['clip_path'])
+      mask_id_list = list(df['mask_id'])
+      mask_path_list = list(df['mask_path'])
+
+      X_train = np.zeros((len(df), IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS), dtype=np.uint8)
+      Y_train = np.zeros((len(df), IMG_HEIGHT, IMG_WIDTH, 1), dtype=np.bool)
+        
+      for i, clip_id in enumerate(clip_id_list):
+          path = os.path.join(clip_path_list[i], clip_id)
+          image = cv2.imread(path)
+          image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
+          X_train[i] = image
+
+      for j, mask_id in enumerate(mask_path_list):
+          path = os.path.join(mask_path_list[i], mask_id)
+          image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
+          image = image[:, :, 3]
+          image = np.expand_dims(image, axis=-1)
+          image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
+          Y_train[j] = image
+            
+      yield X_train, Y_train
+
+train_gen = train_generator()
+val_gen = val_generator()
+
