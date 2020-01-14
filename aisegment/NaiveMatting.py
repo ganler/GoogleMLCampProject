@@ -91,7 +91,7 @@ def train_generator(batch_size=100):
           image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
           X_train[i] = image
 
-      for j, mask_id in enumerate(mask_path_list):
+      for j, mask_id in enumerate(mask_id_list):
           path = os.path.join(mask_path_list[j], mask_id)
           # For Debug Use
           print(path)
@@ -120,8 +120,8 @@ def val_generator(batch_size=100):
           image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
           X_train[i] = image
 
-      for j, mask_id in enumerate(mask_path_list):
-          path = os.path.join(mask_path_list[i], mask_id)
+      for j, mask_id in enumerate(mask_id_list):
+          path = os.path.join(mask_path_list[j], mask_id)
           image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
           image = image[:, :, 3]
           image = np.expand_dims(image, axis=-1)
