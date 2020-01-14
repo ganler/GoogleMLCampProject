@@ -94,11 +94,14 @@ test_gen = test_generator()
 predictions = model.predict_generator(test_gen, steps=len(df_test), verbose=1)
 
 test_id_list = list(df['clip_id'])
-preds = []
 for i, test_id in enumerate(test_id_list):
     image = predictions[i]
     image = resize(image, (800, 600))
     image = image.reshape((1, 800, 600, 1)
-    preds = np.vstack((preds, image))
+
+    if i == 0:
+        preds = image
+    else:
+        preds = np.vstack((preds, image))
     
 print(preds.shape)
