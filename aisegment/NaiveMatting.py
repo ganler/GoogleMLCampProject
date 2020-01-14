@@ -57,9 +57,9 @@ df_mask['merge_id'] = df_mask['mask_id'].apply(get_name)
 
 df_data = pd.merge(df_clip, df_mask, on = 'merge_id')[['clip_id', 'clip_path', 'mask_id', 'mask_path']].reset_index(drop=True)
 
-SAMPLE_SIZE = 10
+SAMPLE_SIZE = 1000
 # For Test Use
-df_data = df_data.sample(SAMPLE_SIZE, random_state=0)
+df_data = df_data.sample(SAMPLE_SIZE, random_state=0).reset_index(drop=True)
 # For Debug Use
 print(df_data.head())
 print(df_data.tail())
