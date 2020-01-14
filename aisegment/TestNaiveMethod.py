@@ -103,5 +103,19 @@ for i, test_id in enumerate(test_id_list):
         preds = image
     else:
         preds = np.vstack((preds, image))
-    
-print(preds.shape)
+
+alpha_preds = (preds >= 0.5).astype(np.uint8) * 255
+
+X_test = np.zeros((len(df_test), 800, 600, 3), dtype=np.uint8)
+
+test_id_list = list(df_test['clip_id'])
+test_path_list = list(df_test['clip_path'])
+
+for i, test_id in enumerate(test_id_list):
+        path = os.path.join(test_path_list[i], test_id)
+        image = cv2.imread(path)
+        image = resize(image, (800, 600), mode='constant', preserve_range=True)
+        X_test[i] = image
+        
+print(X_test.shape)
+print(alpha_preds.shape)
