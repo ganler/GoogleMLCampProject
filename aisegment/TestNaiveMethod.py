@@ -125,5 +125,4 @@ print(alpha_preds.shape)
 predicted_masks = np.concatenate((X_test, alpha_preds), axis=-1)
 
 for i, test_id in enumerate(test_id_list):
-        plt.imshow(predicted_masks[i])
-        plt.savefig(test_id.split('.')[0] + '.png')
+        cv2.imwrite(test_id.split('.')[0] + '.png', predicted_masks[i])
