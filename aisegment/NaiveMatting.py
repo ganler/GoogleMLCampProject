@@ -42,7 +42,7 @@ for i, first_folder in enumerate(first_folder_list):
     for j, second_folder in enumerate(second_folder_list):
         image_list = os.listdir(os.path.join(mask_root_path, first_folder, second_folder))
         df_tmp = pd.DataFrame(image_list, columns=['mask_id'])
-        df_tmp['mask_path'] = os.path.join(clip_root_path, first_folder, second_folder)
+        df_tmp['mask_path'] = os.path.join(mask_root_path, first_folder, second_folder)
         df_mask = pd.concat([df_mask, df_tmp], axis=0).reset_index(drop=True)
 # For Debug Use
 # print(df_mask.head())
@@ -56,9 +56,13 @@ df_clip['merge_id'] = df_clip['clip_id'].apply(get_name)
 df_mask['merge_id'] = df_mask['mask_id'].apply(get_name)
 
 df_data = pd.merge(df_clip, df_mask, on = 'merge_id')[['clip_id', 'clip_path', 'mask_id', 'mask_path']].reset_index(drop=True)
+
+SAMPLE_SIZE = 10
+# For Test Use
+df_data = df_data.sample(SAMPLE_SIZE, random_state=0)
 # For Debug Use
-# print(df_data.head())
-# print(df_data.tail())
+print(df_data.head())
+print(df_data.tail())
 
 df_train, df_val = train_test_split(df_data, test_size=0.2, random_state=0)
 
@@ -86,7 +90,7 @@ def train_generator(batch_size=100):
       for i, clip_id in enumerate(clip_id_list):
           path = os.path.join(clip_path_list[i], clip_id)
           # For Debug Use
-          print(path)
+          # print(path)
           image = cv2.imread(path)
           image = resize(image, (IMG_HEIGHT, IMG_WIDTH), mode='constant', preserve_range=True)
           X_train[i] = image
@@ -94,7 +98,7 @@ def train_generator(batch_size=100):
       for j, mask_id in enumerate(mask_id_list):
           path = os.path.join(mask_path_list[j], mask_id)
           # For Debug Use
-          print(path)
+          # print(path)
           image = cv2.imread(path, cv2.IMREAD_UNCHANGED)
           image = image[:, :, 3]
           image = np.expand_dims(image, axis=-1)
