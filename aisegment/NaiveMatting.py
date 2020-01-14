@@ -40,7 +40,7 @@ first_folder_list = os.listdir(mask_root_path)
 for i, first_folder in enumerate(first_folder_list):
     second_folder_list = os.listdir(os.path.join(mask_root_path, first_folder))
     for j, second_folder in enumerate(second_folder_list):
-        image_list = os.listdir(os.path.join(clip_root_path, first_folder, second_folder))
+        image_list = os.listdir(os.path.join(mask_root_path, first_folder, second_folder))
         df_tmp = pd.DataFrame(image_list, columns=['mask_id'])
         df_tmp['mask_path'] = os.path.join(clip_root_path, first_folder, second_folder)
         df_mask = pd.concat([df_mask, df_tmp], axis=0).reset_index(drop=True)
