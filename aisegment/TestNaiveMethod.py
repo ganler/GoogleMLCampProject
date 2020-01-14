@@ -119,3 +119,8 @@ for i, test_id in enumerate(test_id_list):
         
 print(X_test.shape)
 print(alpha_preds.shape)
+
+predicted_masks = np.concatenate((X_test, alpha_preds), axis=-1)
+
+plt.imshow(predicted_masks)
+plt.show()
