@@ -59,8 +59,8 @@ df_data = pd.merge(df_clip, df_mask, on = 'merge_id')[['clip_id', 'clip_path', '
 
 
 # For Test Use
-# SAMPLE_SIZE = 1000
-# df_data = df_data.sample(SAMPLE_SIZE, random_state=0).reset_index(drop=True)
+SAMPLE_SIZE = 1000
+df_data = df_data.sample(SAMPLE_SIZE, random_state=0).reset_index(drop=True)
 # For Debug Use
 print(df_data.head())
 print(df_data.tail())
@@ -153,7 +153,7 @@ inputs = Input((IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS))
 
 # s = Lambda(lambda x: x / 255) (inputs)
 
-c1 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (s)
+c1 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (inputs)
 c1 = Dropout(0.1) (c1)
 c1 = Conv2D(16, (3, 3), activation='elu', kernel_initializer='he_normal', padding='same') (c1)
 p1 = MaxPooling2D((2, 2)) (c1)
@@ -207,25 +207,23 @@ model = Model(inputs=[inputs], outputs=[outputs])
 
 model.compile(optimizer='adam', loss='binary_crossentropy')
 
-# num_train_samples = len(df_train)
-# num_val_samples = len(df_val)
-# train_batch_size = BATCH_SIZE
-# val_batch_size = BATCH_SIZE
+num_train_samples = len(df_train)
+num_val_samples = len(df_val)
+train_batch_size = BATCH_SIZE
+val_batch_size = BATCH_SIZE
 
-# train_steps = np.ceil(num_train_samples / train_batch_size)
-# val_steps = np.ceil(num_val_samples / val_batch_size)
+train_steps = np.ceil(num_train_samples / train_batch_size)
+val_steps = np.ceil(num_val_samples / val_batch_size)
 
-# filepath = "model.h5"
+filepath = "model.h5"
 
-# earlystopper = EarlyStopping(patience=3, verbose=1)
+earlystopper = EarlyStopping(patience=3, verbose=1)
 
-# checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, 
-#                              save_best_only=True, mode='min')
+checkpoint = ModelCheckpoint(filepath, monitor='val_loss', verbose=1, 
+                             save_best_only=True, mode='min')
 
-# callbacks_list = [earlystopper, checkpoint]
+callbacks_list = [earlystopper, checkpoint]
 
-# history = model.fit_generator(train_gen, steps_per_epoch=train_steps, epochs=20, 
-#                                 validation_data=val_gen, validation_steps=val_steps, 
-#                                 verbose=1, callbacks=callbacks_list)
-
-tf.saved_model.save(model, "model.pb")
+history = model.fit_generator(train_gen, steps_per_epoch=train_steps, epochs=20, 
+                                validation_data=val_gen, validation_steps=val_steps, 
+                                verbose=1, callbacks=callbacks_list)
