@@ -40,9 +40,9 @@ if __name__ == '__main__':
     mapath = './matting/'
 
     imlist = suffix_get(impath, 'jpg')
-    move_file_to(imlist, './data/image')
+    move_file_to(imlist, './Semantic_Human_Matting/data/image')
 
     malist = suffix_get(mapath, 'jpg')
-    move_file_to(malist, './data/mask')
+    move_file_to(malist, './Semantic_Human_Matting/data/mask')
 
-    gen_name_list(imlist, './data/train.txt')
+    gen_name_list(imlist, './Semantic_Human_Matting/data/train.txt')
