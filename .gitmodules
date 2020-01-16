@@ -1,0 +1,3 @@
+[submodule "training/torch_training"]
+	path = training/torch_training
+	url = https://github.com/pytorch/examples
