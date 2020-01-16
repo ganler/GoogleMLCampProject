@@ -14,7 +14,7 @@
     "babel-plugin-emotion": "^8.0.4",
     "emotion": "^8.0.5",
     "emotion-server": "^8.0.5",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "next": "7.0.2",
     "next-fonts": "^0.10.0",
     "react": "16.2.0",
