@@ -10,7 +10,7 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "antd": "^3.11.2",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "babel-plugin-emotion": "^8.0.4",
     "emotion": "^8.0.5",
     "emotion-server": "^8.0.5",
