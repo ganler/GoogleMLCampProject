@@ -6,8 +6,6 @@ Group: Social Eggs
 ## Web Application 
 We provide a web application for online style transferring.
 
-Temp access: http://52.14.234.45:8080/
-
 ### Demo
 ![avatar](http://baidu.com/pic/doge.png)
 
